@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #f4f7f6;
+    }
+
+    h1, h2 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Navbar */
+    #navbar {
+      background-color: #5c6bc0;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+    }
+
+    #navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 18px;
+    }
+
+    #navbar a:hover {
+      text-decoration: underline;
+    }
+
+    /* Main Dashboard Container */
+    #dashboard {
+      margin-top: 80px;
+      padding: 30px;
+      max-width: 1100px;
+      margin: 50px auto;
+      background-color: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* Section Styles */
+    .section {
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      margin: 20px 0;
+      padding: 25px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .section h2 {
+      font-size: 22px;
+      color: #5c6bc0;
+      margin-bottom: 15px;
+    }
+
+    .section p {
+      color: #555;
+    }
+
+    /* Input, Select, Button Styles */
+    input, select, button, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #5c6bc0;
+    }
+
+    button {
+      background-color: #5c6bc0;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      padding: 15px;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #3949ab;
+    }
+
+    button:active {
+      background-color: #303f9f;
+    }
+
+    /* Chatbot Styles */
+    #chatInput {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    #chatResponse {
+      padding: 15px;
+      margin-top: 15px;
+      background-color: #e3f2fd;
+      border-left: 5px solid #039be5;
+      color: #0d47a1;
+      border-radius: 8px;
+    }
+
+    /* Graph Styles */
+    #healthGraph {
+      width: 100%;
+      height: 300px;
+      margin-top: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      #navbar {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      #navbar a {
+        margin: 5px 0;
+      }
+
+      #dashboard {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .section h2 {
+        font-size: 20px;
+      }
+
+      button {
+        padding: 12px;
+        font-size: 14px;
+      }
+
+      input, select, textarea {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div id="navbar">
+    <a href="#">Home</a>
+    <a href="#uploadSection">Upload Report</a>
+    <a href="#historySection">History</a>
+    <a href="#chatbotSection">Chatbot</a>
+  </div>
+
+  <!-- Main Dashboard -->
+  <div id="dashboard">
+    <h1 id="title">Health Dashboard</h1>
+
+    <!-- Language Selector -->
+    <div class="section">
+      <h2>Language</h2>
+      <select id="languageSelector" onchange="switchLanguage()">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
+
+    <!-- Upload Section -->
+    <div id="uploadSection" class="section">
+      <h2 id="uploadTitle">Upload Medical Report</h2>
+      <input type="file" id="fileInput">
+      <button onclick="analyzeReport()" id="analyzeButton">Analyze Report</button>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="section">
+      <h2 id="resultsTitle">Analysis Results</h2>
+      <p id="reportResults">Upload a report to see results here...</p>
+    </div>
+
+    <!-- Health Parameters -->
+    <div id="healthSection" class="section">
+      <h2 id="parametersTitle">Health Parameters</h2>
+      <p id="healthParameters">Health parameters will appear here...</p>
+    </div>
+
+    <!-- Previous Health History -->
+    <div id="historySection" class="section">
+      <h2 id="historyTitle">Previous Health History</h2>
+      <ul id="historyList">
+        <li>No history available.</li>
+      </ul>
+    </div>
+
+    <!-- Prescriptions Section -->
+    <div id="prescriptionsSection" class="section">
+      <h2 id="prescriptionsTitle">Prescriptions</h2>
+      <p id="prescriptions">Prescriptions will appear here...</p>
+    </div>
+
+    <!-- Graph Section -->
+    <div id="graphsSection" class="section">
+      <h2 id="graphsTitle">Graphical Analysis</h2>
+      <canvas id="healthGraph"></canvas>
+    </div>
+
+    <!-- Doctor Consultation -->
+    <div id="consultationSection" class="section">
+      <h2 id="consultationTitle">Doctor Consultation</h2>
+      <button onclick="bookAppointment()" id="consultButton">Book an Appointment</button>
+    </div>
+
+    <!-- Chatbot Section -->
+    <div id="chatbotSection" class="section">
+      <h2 id="chatTitle">Chatbot</h2>
+      <textarea id="chatInput" placeholder="Type your query..."></textarea>
+      <button onclick="handleChat()" id="chatButton">Ask</button>
+      <div id="chatResponse">Chatbot response will appear here...</div>
+    </div>
+
+  </div>
+
+  <script>
+    const texts = {
+      en: {
+        title: "Health Dashboard",
+        uploadTitle: "Upload Medical Report",
+        analyzeButton: "Analyze Report",
+        resultsTitle: "Analysis Results",
+        parametersTitle: "Health Parameters",
+        prescriptionsTitle: "Prescriptions",
+        graphsTitle: "Graphical Analysis",
+        consultationTitle: "Doctor Consultation",
+        consultButton: "Book an Appointment",
+        chatTitle: "Chatbot",
+        chatButton: "Ask",
+        historyTitle: "Previous Health History"
+      },
+      es: {
+        title: "Panel de Salud",
+        uploadTitle: "Subir Informe Médico",
+        analyzeButton: "Analizar Informe",
+        resultsTitle: "Resultados del Análisis",
+        parametersTitle: "Parámetros de Salud",
+        prescriptionsTitle: "Recetas",
+        graphsTitle: "Análisis Gráfico",
+        consultationTitle: "Consulta con el Médico",
+        consultButton: "Reservar una Cita",
+        chatTitle: "Chatbot",
+        chatButton: "Preguntar",
+        historyTitle: "Historia de Salud Anterior"
+      },
+      fr: {
+        title: "Tableau de Santé",
+        uploadTitle: "Télécharger le Rapport Médical",
+        analyzeButton: "Analyser le Rapport",
+        resultsTitle: "Résultats de l'Analyse",
+        parametersTitle: "Paramètres de Santé",
+        prescriptionsTitle: "Prescriptions",
+        graphsTitle: "Analyse Graphique",
+        consultationTitle: "Consultation Médicale",
+        consultButton: "Prendre un Rendez-vous",
+        chatTitle: "Chatbot",
+        chatButton: "Demander",
+        historyTitle: "Antécédents de Santé"
+      }
+    };
+
+    function switchLanguage() {
+      const lang = document.getElementById("languageSelector").value;
+      const elements = [
+        "title", "uploadTitle", "analyzeButton", "resultsTitle", "parametersTitle", 
+        "prescriptionsTitle", "graphsTitle", "consultationTitle", "consultButton", 
+        "chatTitle", "chatButton", "historyTitle"
+      ];
+      elements.forEach(id => {
+        document.getElementById(id).innerText = texts[lang][id];
+      });
+    }
+
+    const fakeReportData = {
+      parameters: {
+        BloodSugar: 180,
+        Cholesterol: 190,
+        BloodPressure: 140,
+        Hemoglobin: 11
+      },
+      prescriptions: [
+        "Take Metformin 500mg twice daily.",
+        "Maintain a low-carb, high-fiber diet.",
+        "Exercise daily for at least 30 minutes."
+      ],
+      recommendations: [
+        "Consult a diabetologist.",
+        "Schedule regular blood sugar check-ups.",
+        "Monitor your blood pressure daily."
+      ]
+    };
+
+    let historyData = [
+      { date: "2024-12-01", parameters: fakeReportData.parameters },
+      { date: "2024-11-15", parameters: { BloodSugar: 160, Cholesterol: 180, BloodPressure: 135, Hemoglobin: 12 } }
+    ];
+
+    function analyzeReport() {
+      const resultsDiv = document.getElementById("reportResults");
+      const parametersDiv = document.getElementById("healthParameters");
+      const prescriptionsDiv = document.getElementById("prescriptions");
+      const historyList = document.getElementById("historyList");
+
+      resultsDiv.innerHTML = `<strong>Blood Sugar:</strong> ${fakeReportData.parameters.BloodSugar} mg/dL<br>
+                              <strong>Cholesterol:</strong> ${fakeReportData.parameters.Cholesterol} mg/dL<br>
+                              <strong>Blood Pressure:</strong> ${fakeReportData.parameters.BloodPressure} mmHg<br>
+                              <strong>Hemoglobin:</strong> ${fakeReportData.parameters.Hemoglobin} g/dL`;
+
+      parametersDiv.innerHTML = `Blood Sugar: ${fakeReportData.parameters.BloodSugar} mg/dL, Cholesterol: ${fakeReportData.parameters.Cholesterol} mg/dL`;
+
+      prescriptionsDiv.innerHTML = fakeReportData.prescriptions.join('<br>');
+
+      historyList.innerHTML = historyData.map(entry => {
+        return `<li>${entry.date} - Blood Sugar: ${entry.parameters.BloodSugar} mg/dL, Cholesterol: ${entry.parameters.Cholesterol} mg/dL</li>`;
+      }).join('');
+
+      // Render the health graph
+      renderGraph();
+    }
+
+    function renderGraph() {
+      var ctx = document.getElementById("healthGraph").getContext('2d');
+      var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['12/01/2024', '11/15/2024'], // dates for history
+          datasets: [{
+            label: 'Blood Sugar',
+            data: [fakeReportData.parameters.BloodSugar, 160], // sample data
+            borderColor: 'rgba(255, 99, 132, 1)',
+            fill: false
+          }]
+        },
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Date'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Blood Sugar (mg/dL)'
+              },
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    function handleChat() {
+      const userInput = document.getElementById("chatInput").value;
+      const chatResponseDiv = document.getElementById("chatResponse");
+
+      // Simple mock response for now
+      chatResponseDiv.innerHTML = `Chatbot response for query: "${userInput}"`;
+    }
+
+    function bookAppointment() {
+      alert("Appointment booking functionality will be implemented.");
+    }
+  </script>
+
+</body>
+</html>

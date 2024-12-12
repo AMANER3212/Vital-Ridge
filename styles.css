@@ -1,0 +1,76 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+nav {
+    background: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.hamburger-menu .bar {
+    background: #fff;
+    width: 25px;
+    height: 3px;
+    margin: 3px 0;
+}
+
+#nav-links {
+    display: flex;
+    list-style: none;
+}
+
+#nav-links li {
+    margin: 0 1rem;
+}
+
+#nav-links li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.content section {
+    padding: 2rem;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: flex;
+    }
+
+    #nav-links {
+        display: none;
+        flex-direction: column;
+        background: #444;
+        position: absolute;
+        top: 60px;
+        width: 100%;
+    }
+
+    #nav-links li {
+        margin: 0.5rem 0;
+    }
+
+    #nav-links.show {
+        display: flex;
+    }
+}

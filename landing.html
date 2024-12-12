@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Dashboard Landing Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #f4f7f6;
+      color: #333;
+    }
+
+    /* Loader Styles */
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #ddd;
+      border-top: 5px solid #3949ab;
+      border-radius: 50%;
+      animation: spin 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Header Section */
+    header {
+      background: linear-gradient(to right, #5c6bc0, #3949ab);
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 40px;
+      background: #f4f7f6;
+    }
+
+    .hero-text {
+      max-width: 600px;
+    }
+
+    .hero-text h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #3949ab;
+    }
+
+    .hero-text p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .hero-text button {
+      background: #3949ab;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .hero-text button:hover {
+      background: #303f9f;
+    }
+
+    .hero-image img {
+      max-width: 500px;
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Features Section */
+    .features {
+      text-align: center;
+      padding: 50px 20px;
+      background: #ffffff;
+    }
+
+    .features h2 {
+      font-size: 36px;
+      color: #3949ab;
+      margin-bottom: 30px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .feature {
+      background: #f4f7f6;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-10px);
+    }
+
+    .feature h3 {
+      color: #3949ab;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .feature p {
+      color: #555;
+    }
+
+    /* Footer Section */
+    footer {
+      background: #3949ab;
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .hero-image img {
+        margin-top: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader Section -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Header Section -->
+  <header>
+    <h1>Health Dashboard</h1>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Your Personal Health Companion</h1>
+      <p>Track your health parameters, analyze reports, and connect with top doctors. Stay informed and in control of your well-being with our advanced health dashboard.</p>
+      <button onclick="location.href='dashboard.html'">Get Started</button>
+    </div>
+    <div class="hero-image">
+      <img src="https://via.placeholder.com/500" alt="Health Dashboard Illustration">
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <h2>Features</h2>
+    <div class="features-grid">
+      <div class="feature">
+        <h3>Analyze Reports</h3>
+        <p>Upload medical reports and receive instant insights and recommendations tailored to your health needs.</p>
+      </div>
+      <div class="feature">
+        <h3>Track Parameters</h3>
+        <p>Keep track of your health metrics like blood sugar, cholesterol, and more, all in one place.</p>
+      </div>
+      <div class="feature">
+        <h3>Connect with Doctors</h3>
+        <p>Consult top medical professionals directly through the dashboard for personalized care.</p>
+      </div>
+      <div class="feature">
+        <h3>Health History</h3>
+        <p>Access your previous health records to monitor progress and plan better for the future.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer>
+    <p>&copy; 2024 Health Dashboard. All rights reserved.</p>
+  </footer>
+
+  <script>
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      loader.style.opacity = '0';
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 500); // Gives a fade-out effect
+    });
+  </script>
+</body>
+</html>
